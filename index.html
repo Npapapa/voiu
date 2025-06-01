@@ -4,23 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nhận Quà Ngẫu Nhiên</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .container { max-width: 400px; margin: 50px auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; }
+        h1 { color: #333; font-size: 24px; margin-bottom: 20px; }
+        .gift-box { font-size: 18px; color: #555; margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border: 1px solid #d0e9ff; border-radius: 8px; }
+        button { background-color: #ff7f50; color: #fff; border: none; padding: 12px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #ff6347; }
+        .result { margin-top: 20px; font-size: 20px; color: #028c2f; font-weight: bold; }
+        .error { margin-top: 20px; font-size: 18px; color: #d32f2f; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <h2>Nhấn nút để nhận phần quà may mắn!</h2>
-    <button onclick="getGift()">Nhận Quà</button>
-    <p id="prizeResult"></p>
+    <div class="container">
+        <h1>Bốc Thăm Nhận Quà</h1>
+        <p class="gift-box">Nhấn nút bên dưới để nhận quà ngẫu nhiên!</p>
+        <button onclick="getGift()">Nhận Quà</button>
+        <div class="result" id="result"></div>
+        <div class="error" id="error"></div>
+    </div>
 
     <script>
-        const googleScriptURL = "https://script.google.com/macros/s/AKfycbz5j7hzfVawWhxUxEgGySKcKqXJu70_ZkB_Vj6h9acRhm4uoJj8iLUStAKNsmNIIbAvPg/exec"; // Thay bằng URL Google Apps Script
+        const googleScriptURL = "https://script.google.com/macros/s/AKfycbz5j7hzfVawWhxUxEgGySKcKqXJu70_ZkB_Vj6h9acRhm4uoJj8iLUStAKNsmNIIbAvPg/exec";
 
         function getGift() {
-            fetch(googleScriptURL)
+            fetch(googleScriptURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    document.getElementById('prizeResult').textContent = data.error;
+                    document.getElementById('error').textContent = data.error;
                 } else {
-                    document.getElementById('prizeResult').textContent = `Chúc mừng! Bạn nhận được: ${data.prize}`;
+                    document.getElementById('result').textContent = `Chúc mừng! Bạn nhận được: ${data.prize}`;
                 }
             })
             .catch(error => alert("Lỗi khi nhận quà!"));
