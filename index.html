@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhận Quà Ngẫu Nhiên</title>
+</head>
+<body>
+    <h2>Nhấn nút để nhận phần quà may mắn!</h2>
+    <button onclick="getGift()">Nhận Quà</button>
+    <p id="prizeResult"></p>
+
+    <script>
+        const googleScriptURL = "https://script.google.com/macros/s/AKfycbz5j7hzfVawWhxUxEgGySKcKqXJu70_ZkB_Vj6h9acRhm4uoJj8iLUStAKNsmNIIbAvPg/exec"; // Thay bằng URL Google Apps Script
+
+        function getGift() {
+            fetch(googleScriptURL)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('prizeResult').textContent = data.error;
+                } else {
+                    document.getElementById('prizeResult').textContent = `Chúc mừng! Bạn nhận được: ${data.prize}`;
+                }
+            })
+            .catch(error => alert("Lỗi khi nhận quà!"));
+        }
+    </script>
+</body>
+</html>
